@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getBlueskyProfile } from '../../../utils/bluesky';
+import { BskyAgent } from '@atproto/api';
+
+const agent = new BskyAgent({ service: 'https://bsky.social' });
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,8 +18,21 @@ export default async function handler(
   }
 
   try {
-    const profile = await getBlueskyProfile(handle);
-    res.status(200).json(profile);
+    await agent.login({
+      identifier: process.env.BLUESKY_SERVICE_IDENTIFIER!,
+      password: process.env.BLUESKY_SERVICE_PASSWORD!,
+    });
+
+    const profile = await agent.getProfile({ actor: handle });
+    
+    return res.status(200).json({
+      displayName: profile.data.displayName,
+      description: profile.data.description,
+      avatar: profile.data.avatar,
+      followersCount: profile.data.followersCount,
+      followsCount: profile.data.followsCount,
+      postsCount: profile.data.postsCount,
+    });
   } catch (error) {
     console.error('Error fetching Bluesky profile:', error);
     res.status(500).json({ error: 'Failed to fetch Bluesky profile' });
