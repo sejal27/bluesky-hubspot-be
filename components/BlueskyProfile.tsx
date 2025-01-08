@@ -69,33 +69,34 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
 
         {/* Stats */}
         <div className="flex gap-6 text-sm">
-          <a 
-            href={`https://bsky.app/profile/${profile.handle}/follows`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            <span className="text-white font-bold">{profile?.followsCount || 0}</span>{' '}
-            <span className="text-gray-500">Following</span>
-          </a>
-          <a 
-            href={`https://bsky.app/profile/${profile.handle}/followers`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            <span className="text-white font-bold">{profile?.followersCount || 0}</span>{' '}
-            <span className="text-gray-500">Followers</span>
-          </a>
-          <a 
-            href={`https://bsky.app/profile/${profile.handle}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
-          >
-            <span className="text-white font-bold">{profile?.postsCount || 0}</span>{' '}
-            <span className="text-gray-500">Posts</span>
-          </a>
+          {[
+            {
+              href: `https://bsky.app/profile/${profile.handle}/follows`,
+              count: profile?.followsCount || 0,
+              label: 'Following'
+            },
+            {
+              href: `https://bsky.app/profile/${profile.handle}/followers`,
+              count: profile?.followersCount || 0,
+              label: 'Followers'
+            },
+            {
+              href: `https://bsky.app/profile/${profile.handle}`,
+              count: profile?.postsCount || 0,
+              label: 'Posts'
+            }
+          ].map(stat => (
+            <a 
+              key={stat.label}
+              href={stat.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              <span className="text-white font-bold">{stat.count}</span>{' '}
+              <span className="text-gray-500">{stat.label}</span>
+            </a>
+          ))}
         </div>
       </div>
 
@@ -116,6 +117,7 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
                 </div>
                 <div className="flex gap-6 text-sm text-gray-500">
                   <a
+                    key="replies"
                     href={`https://bsky.app/profile/${profile.handle}/post/${post.uri.split('/').pop()}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -123,8 +125,8 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
                   >
                     💬 {post.replyCount}
                   </a>
-                  <span>🔁 {post.repostCount}</span>
-                  <span>❤️ {post.likeCount}</span>
+                  <span key="reposts">🔁 {post.repostCount}</span>
+                  <span key="likes">❤️ {post.likeCount}</span>
                 </div>
               </div>
             ))}
