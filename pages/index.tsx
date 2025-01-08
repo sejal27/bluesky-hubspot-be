@@ -39,6 +39,12 @@ export default function Home() {
                 Connect HubSpot
               </button>
               <a
+                href="/bluesky"
+                className="px-8 py-4 text-lg font-medium rounded-lg border border-gray-700 text-white hover:border-gray-600 transition-colors duration-150"
+              >
+                Search Bluesky Profiles
+              </a>
+              <a
                 href="https://developers.hubspot.com/docs/api/overview"
                 target="_blank"
                 rel="noopener noreferrer"
