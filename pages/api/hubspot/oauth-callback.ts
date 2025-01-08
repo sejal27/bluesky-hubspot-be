@@ -18,16 +18,13 @@ export default async function handler(
         client_id: process.env.HUBSPOT_CLIENT_ID,
         client_secret: process.env.HUBSPOT_CLIENT_SECRET,
         redirect_uri: process.env.HUBSPOT_REDIRECT_URI,
-        code: code,
+        code: code
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     });
 
-    // Store the access token securely (you'll need to implement this)
-    const { access_token, refresh_token } = tokenResponse.data;
-    
     // Redirect to your app's dashboard or success page
     res.redirect('/dashboard?auth=success');
   } catch (error) {
