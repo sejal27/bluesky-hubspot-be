@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { getHubSpotAuthUrl } from '../utils/hubspot';
+import Link from 'next/link';
 
 export default function Home() {
   const handleInstall = async () => {
@@ -38,12 +39,12 @@ export default function Home() {
               >
                 Connect HubSpot
               </button>
-              <a
+              <Link
                 href="/bluesky"
                 className="px-8 py-4 text-lg font-medium rounded-lg border border-gray-700 text-white hover:border-gray-600 transition-colors duration-150"
               >
                 Search Bluesky Profiles
-              </a>
+              </Link>
               <a
                 href="https://developers.hubspot.com/docs/api/overview"
                 target="_blank"
