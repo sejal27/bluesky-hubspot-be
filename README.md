@@ -1,4 +1,78 @@
+# Bluesky HubSpot Integration
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## API Documentation
+
+### Bluesky Profile Endpoint
+
+Get a user's Bluesky profile information.
+
+```http
+GET /api/bluesky/profile?handle={handle}
+```
+
+| Parameter | Type     | Description                                             |
+| --------- | -------- | ------------------------------------------------------- |
+| `handle`  | `string` | **Required**. Bluesky handle (e.g., `user.bsky.social`) |
+
+#### Response
+
+```json
+{
+  "displayName": "string",
+  "description": "string",
+  "avatar": "string",
+  "followersCount": "number",
+  "followsCount": "number",
+  "postsCount": "number"
+}
+```
+
+### Bluesky Posts Endpoint
+
+Get a user's Bluesky posts with pagination support.
+
+```http
+GET /api/bluesky/posts?handle={handle}&limit={limit}&cursor={cursor}
+```
+
+| Parameter | Type     | Description                                       |
+| --------- | -------- | ------------------------------------------------- |
+| `handle`  | `string` | **Required**. Bluesky handle                      |
+| `limit`   | `number` | Optional. Number of posts to return (default: 10) |
+| `cursor`  | `string` | Optional. Pagination cursor for next page         |
+
+#### Response
+
+```json
+{
+  "posts": [
+    {
+      "uri": "string",
+      "text": "string",
+      "likeCount": "number",
+      "repostCount": "number",
+      "replyCount": "number",
+      "postedAt": "string"
+    }
+  ],
+  "cursor": "string | null"
+}
+```
+
+### Example API Usage
+
+```bash
+# Fetch profile
+curl "http://localhost:3000/api/bluesky/profile?handle=user.bsky.social"
+
+# Fetch posts (first page)
+curl "http://localhost:3000/api/bluesky/posts?handle=user.bsky.social&limit=5"
+
+# Fetch posts (next page)
+curl "http://localhost:3000/api/bluesky/posts?handle=user.bsky.social&limit=5&cursor={cursor_from_previous_response}"
+```
 
 ## Getting Started
 
