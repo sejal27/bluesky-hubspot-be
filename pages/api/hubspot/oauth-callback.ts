@@ -12,7 +12,7 @@ export default async function handler(
   }
 
   try {
-    const tokenResponse = await axios.post('https://api.hubapi.com/oauth/v1/token', null, {
+    await axios.post('https://api.hubapi.com/oauth/v1/token', null, {
       params: {
         grant_type: 'authorization_code',
         client_id: process.env.HUBSPOT_CLIENT_ID,
