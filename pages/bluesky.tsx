@@ -1,24 +1,30 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import BlueskyProfile from '../components/BlueskyProfile';
-import { AppBskyActorDefs } from '@atproto/api';
 
-interface ProfileData {
-  profile: AppBskyActorDefs.ProfileView;
-  posts: {
-    text: string;
-    uri: string;
-    cid: string;
-    replyCount: number;
-    repostCount: number;
-    likeCount: number;
-    indexedAt: string;
-  }[];
+interface Profile {
+  handle: string;
+  displayName?: string;
+  description?: string;
+  avatar?: string;
+  followersCount?: number;
+  followsCount?: number;
+  postsCount?: number;
+}
+
+interface Post {
+  text: string;
+  uri: string;
+  cid: string;
+  replyCount: number;
+  repostCount: number;
+  likeCount: number;
+  indexedAt: string;
 }
 
 export default function Bluesky() {
   const [handle, setHandle] = useState('');
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [profileData, setProfileData] = useState<{ profile: Profile; posts: Post[] } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -28,11 +34,23 @@ export default function Bluesky() {
     setError('');
 
     try {
-      const response = await fetch(`/api/bluesky/profile?handle=${handle}`);
-      const data = await response.json();
+      // First fetch profile
+      const profileResponse = await fetch(`/api/bluesky/profile?handle=${handle}`);
+      const profileData = await profileResponse.json();
       
-      if (!response.ok) throw new Error(data.error);
-      setProfileData(data);
+      if (!profileResponse.ok) throw new Error(profileData.error);
+
+      // Then fetch posts
+      const postsResponse = await fetch(`/api/bluesky/posts?handle=${handle}`);
+      const postsData = await postsResponse.json();
+
+      if (!postsResponse.ok) throw new Error(postsData.error);
+
+      // Set both profile and posts data
+      setProfileData({
+        profile: profileData,
+        posts: postsData.posts
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch profile');
     } finally {

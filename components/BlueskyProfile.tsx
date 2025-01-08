@@ -25,6 +25,14 @@ interface BlueskyProfileProps {
 }
 
 export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) {
+  if (!profile || !profile.handle) {
+    return (
+      <div className="bg-black border border-gray-800 rounded-xl p-6">
+        <p className="text-white">Profile not found</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-black border border-gray-800 rounded-xl overflow-hidden">
       {/* Banner - using a placeholder gradient */}
@@ -37,8 +45,8 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
           <div className="inline-block rounded-full border-4 border-black overflow-hidden">
             <div className="relative w-32 h-32">
               <Image
-                src={profile.avatar || '/default-avatar.png'}
-                alt={profile.displayName || 'Profile'}
+                src={profile?.avatar || 'https://cdn.bsky.app/img/avatar/plain/did:plc:default/default@jpeg'}
+                alt={profile?.displayName || profile.handle}
                 fill
                 className="object-cover"
               />
@@ -48,13 +56,15 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
 
         {/* Name and Handle */}
         <div className="mb-4">
-          <h2 className="text-xl font-bold text-white">{profile.displayName}</h2>
+          <h2 className="text-xl font-bold text-white">{profile?.displayName || profile.handle}</h2>
           <p className="text-gray-500">@{profile.handle}</p>
         </div>
 
         {/* Description */}
         <div className="mb-4">
-          <p className="text-white whitespace-pre-wrap">{profile.description}</p>
+          {profile?.description && (
+            <p className="text-white whitespace-pre-wrap">{profile.description}</p>
+          )}
         </div>
 
         {/* Stats */}
@@ -65,7 +75,7 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <span className="text-white font-bold">{profile.followsCount}</span>{' '}
+            <span className="text-white font-bold">{profile?.followsCount || 0}</span>{' '}
             <span className="text-gray-500">Following</span>
           </a>
           <a 
@@ -74,7 +84,7 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <span className="text-white font-bold">{profile.followersCount}</span>{' '}
+            <span className="text-white font-bold">{profile?.followersCount || 0}</span>{' '}
             <span className="text-gray-500">Followers</span>
           </a>
           <a 
@@ -83,42 +93,44 @@ export default function BlueskyProfile({ profile, posts }: BlueskyProfileProps) 
             rel="noopener noreferrer"
             className="hover:underline"
           >
-            <span className="text-white font-bold">{profile.postsCount}</span>{' '}
+            <span className="text-white font-bold">{profile?.postsCount || 0}</span>{' '}
             <span className="text-gray-500">Posts</span>
           </a>
         </div>
       </div>
 
       {/* Posts Section */}
-      <div className="border-t border-gray-800">
-        <h3 className="px-4 py-3 text-white font-semibold border-b border-gray-800">
-          Recent Posts
-        </h3>
-        <div className="divide-y divide-gray-800">
-          {posts.map((post) => (
-            <div key={post.cid} className="px-4 py-4">
-              <div className="mb-2">
-                <p className="text-white mb-2">{post.text}</p>
-                <span className="text-gray-500 text-sm">
-                  {formatDistanceToNow(new Date(post.indexedAt))} ago
-                </span>
+      {posts && posts.length > 0 && (
+        <div className="border-t border-gray-800">
+          <h3 className="px-4 py-3 text-white font-semibold border-b border-gray-800">
+            Recent Posts
+          </h3>
+          <div className="divide-y divide-gray-800">
+            {posts.map((post) => (
+              <div key={post.cid} className="px-4 py-4">
+                <div className="mb-2">
+                  <p className="text-white mb-2">{post.text}</p>
+                  <span className="text-gray-500 text-sm">
+                    {post.indexedAt ? formatDistanceToNow(new Date(post.indexedAt)) + ' ago' : ''}
+                  </span>
+                </div>
+                <div className="flex gap-6 text-sm text-gray-500">
+                  <a
+                    href={`https://bsky.app/profile/${profile.handle}/post/${post.uri.split('/').pop()}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-300"
+                  >
+                    💬 {post.replyCount}
+                  </a>
+                  <span>🔁 {post.repostCount}</span>
+                  <span>❤️ {post.likeCount}</span>
+                </div>
               </div>
-              <div className="flex gap-6 text-sm text-gray-500">
-                <a
-                  href={`https://bsky.app/profile/${profile.handle}/post/${post.uri.split('/').pop()}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-gray-300"
-                >
-                  💬 {post.replyCount}
-                </a>
-                <span>🔁 {post.repostCount}</span>
-                <span>❤️ {post.likeCount}</span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* View Profile Link */}
       <a

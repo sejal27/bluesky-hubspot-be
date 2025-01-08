@@ -25,7 +25,10 @@ export default async function handler(
 
     const profile = await agent.getProfile({ actor: handle });
     
+    console.log('Bluesky Profile Response:', profile.data);
+
     return res.status(200).json({
+      handle: profile.data.handle,
       displayName: profile.data.displayName,
       description: profile.data.description,
       avatar: profile.data.avatar,
@@ -34,7 +37,10 @@ export default async function handler(
       postsCount: profile.data.postsCount,
     });
   } catch (error) {
-    console.error('Error fetching Bluesky profile:', error);
-    res.status(500).json({ error: 'Failed to fetch Bluesky profile' });
+    console.error('Full Error:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch Bluesky profile',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 } 
