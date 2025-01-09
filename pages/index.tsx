@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <Head>
-        <title>HubSpot OAuth Integration</title>
+        <title>HubSpot Bluesky Integration</title>
         <meta name="description" content="Securely connect and manage your HubSpot CRM data" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -23,13 +23,13 @@ export default function Home() {
           
           <div className="relative flex flex-col items-center text-center">
             <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
-              HubSpot OAuth{' '}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
-                Integration
-              </span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
+                HubSpot 
+              </span> BlueSky Integration
+              
             </h1>
             <p className="max-w-2xl text-xl text-gray-400 mb-12">
-              A secure and efficient way to integrate HubSpot CRM with your applications. Built with modern OAuth standards.
+              View Bluesky profile and posts for the contacts on the HubSpot record page.
             </p>
             
             <div className="flex gap-6 flex-col sm:flex-row">
@@ -55,65 +55,36 @@ export default function Home() {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Features Grid */}
-        <div className="max-w-5xl mx-auto py-20 grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-6 rounded-lg border border-gray-800 bg-black/50 backdrop-blur-sm">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Core Features
-            </h2>
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Manages HubSpot contacts securely
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Implements OAuth 2.0 authentication
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Handles automatic token refresh
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Provides seamless API integration
-              </li>
-            </ul>
-          </div>
-
-          <div className="p-6 rounded-lg border border-gray-800 bg-black/50 backdrop-blur-sm">
-            <h2 className="text-xl font-semibold text-white mb-4">
-              Security Features
-            </h2>
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Secure token management
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Environment variable protection
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Scoped API permissions
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-orange-500">•</span>
-                Encrypted data transfer
-              </li>
-            </ul>
-          </div>
-        </div>
+        </div>        
       </main>
-
-      <footer className="border-t border-gray-800 py-6">
-        <div className="max-w-5xl mx-auto px-6 text-center text-gray-500">
-          <p>© {new Date().getFullYear()} HubSpot OAuth Integration. All rights reserved.</p>
+{/* 
+     <footer className="border-t border-gray-800 py-6">
+      <div className="max-w-5xl mx-auto px-6 text-center text-gray-500">
+          <p>This is not an official app.</p>
         </div>
-      </footer>
+      <div className="max-w-[1200px] mx-auto px-6 py-4">
+        <div className="flex items-center justify-between text-sm">
+          <div className="text-gray-400">
+            Built by{' '}
+            <Link 
+              href="https://www.linkedin.com/in/sejalparikh/" 
+              target="_blank"
+              className="text-white hover:text-gray-300 transition-colors"
+            >
+              Sejal Parikh
+            </Link>
+          </div>
+          <div className="text-gray-400">
+            <Link 
+              href="mailto:sparikh@hubspot.com"
+              className="text-white hover:text-gray-300 transition-colors"
+            >
+              Contact Support
+            </Link>
+          </div>
+        </div>
+      </div> 
+      </footer> */}
     </div>
   );
 } 
