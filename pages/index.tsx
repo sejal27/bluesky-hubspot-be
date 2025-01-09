@@ -47,7 +47,7 @@ export default function Home() {
                 Search Bluesky Profiles
               </Link>
               <a
-                href="https://developers.hubspot.com/docs/api/overview"
+                href="https://github.com/sejal27/bluesky-hubspot-be"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-4 text-lg font-medium rounded-lg border border-gray-700 text-white hover:border-gray-600 transition-colors duration-150"
