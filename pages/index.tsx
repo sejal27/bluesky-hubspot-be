@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import { getHubSpotAuthUrl } from '../utils/hubspot';
 import Link from 'next/link';
+import Disclaimer from '../components/Disclaimer';
+import FeatureCard from '../components/FeatureCard';
 
 export default function Home() {
   const handleInstall = async () => {
@@ -9,7 +11,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black relative">
       <Head>
         <title>HubSpot Bluesky Profile Integration</title>
         <meta name="description" content="Securely connect and manage your HubSpot CRM data" />
@@ -23,10 +25,9 @@ export default function Home() {
           
           <div className="relative flex flex-col items-center text-center">
             <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
                 HubSpot 
               </span> BlueSky Profile Integration
-              
             </h1>
             <p className="max-w-2xl text-xl text-gray-400 mb-12">
               View Bluesky profile and posts for the contacts on the HubSpot record page.
@@ -56,35 +57,25 @@ export default function Home() {
             </div>
           </div>
         </div>        
+        {/* Features Section */}
+        <div className="py-24 max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-white text-center mb-12">Source Code</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <FeatureCard
+              title="Backend Repository"
+              description="Next.js application deployed on Vercel that handles HubSpot OAuth, custom property creation, and Bluesky profile integration."
+              repoUrl="https://github.com/sejal27/bluesky-hubspot-be"
+            />
+            <FeatureCard 
+              title="HubSpot UI Extension"
+              description="HubSpot application with UI extension that displays Bluesky profiles and posts on contact record pages."
+              repoUrl="https://github.com/sejal27/bluesky-hubspot-uie"
+            />
+          </div>
+        </div>
+
       </main>
-{/* 
-     <footer className="border-t border-gray-800 py-6">
-      <div className="max-w-5xl mx-auto px-6 text-center text-gray-500">
-          <p>This is not an official app.</p>
-        </div>
-      <div className="max-w-[1200px] mx-auto px-6 py-4">
-        <div className="flex items-center justify-between text-sm">
-          <div className="text-gray-400">
-            Built by{' '}
-            <Link 
-              href="https://www.linkedin.com/in/sejalparikh/" 
-              target="_blank"
-              className="text-white hover:text-gray-300 transition-colors"
-            >
-              Sejal Parikh
-            </Link>
-          </div>
-          <div className="text-gray-400">
-            <Link 
-              href="mailto:sparikh@hubspot.com"
-              className="text-white hover:text-gray-300 transition-colors"
-            >
-              Contact Support
-            </Link>
-          </div>
-        </div>
-      </div> 
-      </footer> */}
+      <Disclaimer />
     </div>
   );
 } 
