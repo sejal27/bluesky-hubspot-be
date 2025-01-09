@@ -8,7 +8,6 @@ async function getTokenMetadata(accessToken: string) {
         'Authorization': `Bearer ${accessToken}`,
       }
     });
-    console.log('Token Metadata:', JSON.stringify(response.data, null, 2));
     return response.data;
   } catch (error) {
     console.error('Error fetching token metadata:', error);
