@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <Head>
-        <title>HubSpot Bluesky Integration</title>
+        <title>HubSpot Bluesky Profile Integration</title>
         <meta name="description" content="Securely connect and manage your HubSpot CRM data" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -25,7 +25,7 @@ export default function Home() {
             <h1 className="text-5xl sm:text-7xl font-extrabold text-white tracking-tight mb-6">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 to-orange-300">
                 HubSpot 
-              </span> BlueSky Integration
+              </span> BlueSky Profile Integration
               
             </h1>
             <p className="max-w-2xl text-xl text-gray-400 mb-12">
