@@ -1,6 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import axios, { AxiosError } from 'axios';
 
+async function getTokenMetadata(accessToken: string) {
+  try {
+    const response = await axios.get(`https://api.hubapi.com/oauth/v1/access-tokens/${accessToken}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    });
+    console.log('Token Metadata:', JSON.stringify(response.data, null, 2));
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching token metadata:', error);
+    throw error;
+  }
+}
+
 async function createBlueskyHandleProperty(accessToken: string) {
   try {
     console.log("Starting to create Bluesky handle property...");
@@ -51,6 +66,7 @@ export default async function handler(
   }
 
   try {
+    console.log('Exchanging code for token...');
     const tokenResponse = await axios.post('https://api.hubapi.com/oauth/v1/token', null, {
       params: {
         grant_type: 'authorization_code',
@@ -64,19 +80,35 @@ export default async function handler(
       },
     });
 
-    console.log('Full Token Response:', JSON.stringify(tokenResponse.data, null, 2));
+    const accessToken = tokenResponse.data.access_token;
+    console.log('Access token received');
+
+    // Get token metadata to get hub_id
+    const tokenMetadata = await getTokenMetadata(accessToken);
+    const portalId = tokenMetadata.hub_id;
 
     // Create the Bluesky handle property
     console.log("Creating Bluesky handle property...");
-    await createBlueskyHandleProperty(tokenResponse.data.access_token);
+    await createBlueskyHandleProperty(accessToken);
 
-    const portalId = tokenResponse.data?.portal_id || tokenResponse.data?.hub_id || '48801458';
+    if (!portalId) {
+      console.error('No portal ID found in token metadata:', tokenMetadata);
+      throw new Error('No portal ID found in token metadata');
+    }
+
     console.log('Portal ID:', portalId);
-    console.log('Redirecting to:', `https://app.hubspot.com/integrations-settings/${portalId}/installed/framework/${process.env.HUBSPOT_APP_ID}/app-cards`);
+    const redirectUrl = `https://app.hubspot.com/integrations-settings/${portalId}/installed/framework/${process.env.HUBSPOT_APP_ID}/app-cards`;
+    console.log('Redirecting to:', redirectUrl);
 
-    res.redirect(`https://app.hubspot.com/integrations-settings/${portalId}/installed/framework/${process.env.HUBSPOT_APP_ID}/app-cards`);
+    res.redirect(redirectUrl);
   } catch (error) {
-    console.error('OAuth Error:', error);
+    console.error('OAuth Error:', error instanceof Error ? error.message : error);
+    if (error instanceof AxiosError) {
+      console.error('API Response:', {
+        status: error.response?.status,
+        data: error.response?.data
+      });
+    }
     res.redirect('/error?message=oauth_failed');
   }
-} 
+}
